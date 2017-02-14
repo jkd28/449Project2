@@ -36,15 +36,16 @@ void getStrings(FILE *f){
 		
 		/*if there are less than 4 valid characters in a row, skip the rest of the loop */
 		if(count < 4){
+			count = 0;
 			continue;
 		} else {
 		/*if there are >=4 characters in a row, reread all the characters, generate string, print string, free string*/	
 			/*get the current location in the file*/
 			current_offset = ftell(f);
 			/*seek back to the beginning of our string*/
-			fseek(f, (current_offset-count), SEEK_SET);
+			fseek(f, (current_offset-(count+1)), SEEK_SET);
 			/*allocate appropriate memory for the string*/
-			string = malloc(count*sizeof(char));
+			string = malloc((count+1)*sizeof(char));
 			/*get the characters for the string*/
 			for(i=0; i < count; i++){
 				fread(&string[i],sizeof(char),1,f);
@@ -54,6 +55,8 @@ void getStrings(FILE *f){
 			printf("%s\n",string); /*print the string*/
 			
 			free(string);/*free the string's allocated memory*/
+			count = 0; /*reset count */
+			fseek(f, current_offset, SEEK_SET);
 		}
 	}	
 }
@@ -71,6 +74,6 @@ int main(int argc, char *argv[]){
 		return 1;
 	}	
 	getStrings(f);
-	
+	fclose(f);
 	return 0;
 }
