@@ -17,11 +17,11 @@ int isValid(char character){
 }
 
 /*gets strings of length > 4 and prints them to the screen*/
-void getStrings(File *f){
+void getStrings(FILE *f){
 	int current_offset, i;
 	int result, count=0;
 	char c;
-	char string[];
+	char *string;
 	/*check for strings of length > 4*/
 	result=1;
 	while(result != 0){
@@ -42,7 +42,7 @@ void getStrings(File *f){
 			/*get the current location in the file*/
 			current_offset = ftell(f);
 			/*seek back to the beginning of our string*/
-			fseek(f, (current_offset-count, SEEK_SET);
+			fseek(f, (current_offset-count), SEEK_SET);
 			/*allocate appropriate memory for the string*/
 			string = malloc(count*sizeof(char));
 			/*get the characters for the string*/
@@ -63,11 +63,9 @@ int main(int argc, char *argv[]){
 	char c;
 	int inString = 0;
 	int charCount = 0;
-	struct Node *root_node;
-	struct Node *current_node;
 	
 	/*open the file*/
-	File *f = fopen(argv[1], "rb");
+	FILE *f = fopen(argv[1], "rb");
 	if(f == NULL){
 		printf("ERROR: Input File Does Not Exist. Terminating Program.\n");
 		return 1;
